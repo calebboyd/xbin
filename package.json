@@ -1,0 +1,47 @@
+{
+  "name": "xbin",
+  "version": "1.0.4",
+  "description": "Package your node applications as standalone executable binaries.",
+  "main": "index.js",
+  "keywords": [
+    "node",
+    "binary"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/calebboyd/xbin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/calebboyd/xbin/issues"
+  },
+  "homepage": "https://github.com/calebboyd/xbin#readme",
+  "scripts": {
+    "build": "babel src --out-dir lib",
+    "lint": "eslint src",
+    "prepublish": "npm run lint && npm run build"
+  },
+  "bin": {
+    "xbin": "./index.js"
+  },
+  "files": [
+    "lib"
+  ],
+  "author": "Caleb Boyd <caleb.boyd@gmail.com> (https://github.com/calebboyd)",
+  "license": "MIT",
+  "dependencies": {
+    "app-builder": "^5.0.1",
+    "bluebird": "^3.3.5",
+    "minimist": "^1.2.0",
+    "mkdirp": "^0.5.1",
+    "progress": "^1.1.8",
+    "tar": "^2.2.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.9.0",
+    "babel-eslint": "^6.0.4",
+    "babel-plugin-transform-async-to-module-method": "^6.8.0",
+    "babel-preset-es2015-node4": "^2.1.0",
+    "eslint": "^2.10.2",
+    "eslint-plugin-babel": "^3.2.0"
+  }
+}
