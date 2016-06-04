@@ -29,7 +29,6 @@ xbin --help              CLI OPTIONS
   -f --flags      ="--expose-gc"          -- v8 flags to include during compilation
   -c --configure                          -- arguments to forward to configure.py script
   -m --make                               -- arguments to forward to make or vcbuild.bat
-  -b --bundle                             -- bundle contents eg. `-b $(cat bundle)`
 
   -r --resource                           -- Not Supported yet (resource files)
 ```
@@ -37,10 +36,20 @@ xbin --help              CLI OPTIONS
 ### Prerequisites
 
 - You must be able to [build Node](https://github.com/nodejs/node/blob/master/BUILDING.md)
+- You need an application bundle for your node project.
+  - browserify
+  - webpack
+  - jspm
+
 
 ### How does it work
 
-Node supports a `_third_party_main.js`. This file is used to load your application bundle. `xbin` is just a cli tool to manage a small portion of node's build configuration.
+Node supports a `_third_party_main.js`. This file is used to load your application bundle.
+`xbin` is just a cli tool to manage a small portion of node's build configuration.
+
+`xbin` does the following
+ - Facilitates passing commands to `configure` and `make` stages of building node
+ - modifies `node.gyp` to add additional "core modules" (your application bundle)
 
 ### Node Versions
 
@@ -52,17 +61,12 @@ No plans exist to support anything but the latest LTS releases.
 - Services written on Node.js
 	- winsw on Windows
 	- systemv or systemd on Linux
-
-
-### Native Modules and child_process
-
-- Addons to support native modules should be possible in the future
-- `child_process.fork` will spawn a new instance of your app
+- Ship and update runtimes at will
 
 #### TODO
 - resources
 - native modules
-- module splitting sample
+- bundle splitting
 
 ### LICENSE
 - [MIT](https://github.com/calebboyd/xbin/blob/master/LICENSE)
