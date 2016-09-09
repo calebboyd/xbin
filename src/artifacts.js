@@ -38,6 +38,7 @@ export async function artifacts ({ files, writeFileAsync, src }, next) {
   const tmpFiles = await readDirAsync(temp) //eslint-disable-line one-var
 
   await mapAsync(tmpFiles, async (path) => {
+
     return writeFileAsync(path.replace(temp, ''), await readFileAsync(path, 'utf-8'))
   })
   await next()

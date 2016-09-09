@@ -48,12 +48,14 @@ Node supports a `_third_party_main.js`. This file is used to load your applicati
 `xbin` is just a cli tool to manage a small portion of node's build configuration.
 
 `xbin` does the following
- - Facilitates passing commands to `configure` and `make` stages of building node
- - modifies `node.gyp` to add additional "core modules" (your application bundle)
+ - facilitates passing commands to `configure` and `make` stages of building node
+ - facilitates passing custom command line options
+ - modifies `node.gyp` to include additional "core modules" (your application bundle)
+ - disables v8 and node command line flags by modifying `src/node.cc`
 
 ### Node Versions
 
-Right now it is only confirmed to work on Node v4.4.4.
+Should work on versions >= 4.4.1
 No plans exist to support anything but the latest LTS releases.
 
 ### Use Cases

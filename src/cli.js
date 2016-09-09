@@ -1,71 +1,9 @@
-import parseArgv from 'minimist'
-import { join, normalize } from 'path'
-import { promisify } from 'bluebird'
+import { normalize } from 'path'
+import { Promise, promisify } from 'bluebird'
 import { createWriteStream, readFile } from 'fs'
+import { argv } from './options'
 
-const isWindows = process.platform === 'win32',
-  readFileAsync = promisify(readFile),
-  ensureArray = (hash, key) => {
-    const value = hash[key] || []
-    hash[key] = Array.isArray(value) ? value : [value]
-  },
-  argv = parseArgv(process.argv, {
-    alias: {
-      i: 'input',
-      p: 'python',
-      v: 'version',
-      t: 'temp',
-      c: 'configure',
-      f: 'flags',
-      o: 'output',
-      m: 'make',
-      b: 'bundle',
-      r: 'resource',
-      flag: 'flags',
-      h: 'help'
-    },
-    default: {
-      python: null,
-      version: '4.4.4',
-      temp: process.env.XBIN_TEMP || join(process.cwd(), '.xbin'),
-      make: isWindows ? ['nosign', 'release'] : [],
-      output: './xbin_' + Date.now() + (isWindows ? '.exe' : '')
-    }
-  }),
-  help = `
-xbin --help              CLI OPTIONS
-
-  -i --input      =/main/bundle/file.js   -- main js bundle
-  -o --output     =/my/xbin/binary     -- path to output file
-  -p --python     =/path/to/python        -- python executable
-  -v --version    =4.4.4                  -- node version
-  -t --temp       =/path/for/build/files  -- xbin temp directory (3Gb+) ~ XBIN_TEMP
-  -f --flags      ="--expose-gc"          -- v8 flags to include during compilation
-  -c --configure                          -- arguments to forward to configure.py script
-  -m --make                               -- arguments to forward to make or vcbuild.bat
-  -b --bundle                             -- bundle contents eg. \`-b $(cat bundle)\`
-  
-  -r --resource                           -- Not Supported yet (resource files)
-  
-  `,
-  options = {
-    configure: argv.configure,
-    make: argv.make,
-    resources: argv.resource,
-    flags: argv.flags,
-    bundles: argv.bundle,
-    output: argv.output,
-    version: argv.version,
-    python: argv.python,
-    tempDir: argv.temp,
-    src: join(argv.temp, argv.version)
-  }
-
-ensureArray(options, 'configure')
-ensureArray(options, 'make')
-ensureArray(options, 'flags')
-ensureArray(options, 'resources')
-ensureArray(options, 'bundles')
+const readFileAsync = promisify(readFile)
 
 function dequoteStdIn (input) {
   input = input.trim()
@@ -90,17 +28,17 @@ function getStdIn () {
 
 async function cli (compiler, next) {
   if (argv.help) {
-    process.stdout.write(help)
+    process.stdout.write(argv.help)
     process.exit(0)
   }
 
   if (!process.stdin.isTTY) {
-    compiler.bundles.unshift(await getStdIn())
+    compiler.input = await getStdIn()
   } else if (argv.input) {
-    compiler.bundles.push(await readFileAsync(normalize(argv.input), 'utf-8'))
+    compiler.input = await readFileAsync(normalize(argv.input), 'utf-8')
   }
 
-  if (!compiler.bundles.length) {
+  if (!compiler.input) {
     process.stderr.write('Error: No input file specified...\nAborting...')
     process.exit(1)
   }
@@ -117,7 +55,5 @@ async function cli (compiler, next) {
 }
 
 export {
-  cli,
-  argv,
-  options
+  cli
 }

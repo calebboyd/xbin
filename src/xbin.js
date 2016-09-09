@@ -1,23 +1,31 @@
 import { compose } from 'app-builder'
 import { Compiler } from './compiler'
-import { options, cli } from './cli'
+import { options } from './options'
+import { cli } from './cli'
 import { download } from './download'
 import { compile } from './compile'
 import { artifacts } from './artifacts'
 import { bundle } from './bundle'
 import { nodeGyp } from './gyp'
 import { flags } from './flags'
+import { argv } from './argv'
 
-const xbin = compose(
+function build (compilerOptions) {
+  const xbin = compose(
     cli,
     download,
     compile,
     artifacts,
+    //TODO cache binary/options,
     bundle,
+    //patches
     flags,
-    nodeGyp
-  ),
-  build = opts => xbin(new Compiler(opts))
+    nodeGyp,
+    argv
+  )
+  return xbin(new Compiler(compilerOptions))
+
+}
 
 export {
   build,
