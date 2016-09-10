@@ -1,10 +1,10 @@
 export async function argv (compiler, next) {
   const nodecc = await compiler.readFileAsync('src/node.cc'),
-    nodeccMarker = '  bool short_circuit = false;'
+    nodeccMarker = "argv[index][0] == '-'"
 
   nodecc.contents = nodecc.contents.replace(
     nodeccMarker,
-    nodeccMarker.replace('false', 'true')
+    nodeccMarker.replace('-', ']')
   )
 
   return next()
