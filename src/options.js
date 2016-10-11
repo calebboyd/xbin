@@ -51,8 +51,7 @@ xbin --help              CLI OPTIONS
     output: argv.output,
     version: argv.version,
     python: argv.python,
-    tempDir: argv.temp,
-    src: join(argv.temp, argv.version)
+    tempDir: argv.temp
   }
 
 argv.help = argv.help ? help : false

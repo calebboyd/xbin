@@ -1,7 +1,7 @@
 import { normalize } from 'path'
 import { Promise, promisify } from 'bluebird'
 import { createWriteStream, readFile } from 'fs'
-import { argv, options } from './options'
+import { argv } from './options'
 
 const readFileAsync = promisify(readFile)
 
@@ -34,8 +34,8 @@ async function cli (compiler, next) {
 
   if (!process.stdin.isTTY) {
     compiler.input = await getStdIn()
-  } else if (options.input) {
-    compiler.input = await readFileAsync(normalize(options.input), 'utf-8')
+  } else if (compiler.input) {
+    compiler.input = await readFileAsync(normalize(compiler.input), 'utf-8')
   }
 
   if (!compiler.input) {

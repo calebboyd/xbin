@@ -10,6 +10,7 @@ import { nodeGyp } from './gyp'
 import { resource } from './resource'
 import { flags } from './flags'
 import { argv } from './argv'
+import { ico } from './ico'
 
 function build (compilerOptions) {
   const xbin = compose(
@@ -21,6 +22,7 @@ function build (compilerOptions) {
     bundle,
     //patches
     resource,
+    ico,
     flags,
     nodeGyp,
     argv

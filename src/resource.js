@@ -1,4 +1,3 @@
-import { options } from './options'
 import { basename, normalize } from 'path'
 import { map, promisify } from 'bluebird'
 import { readFile } from 'fs'
@@ -26,11 +25,11 @@ const readFileAsync = promisify(readFile),
   `
 
 export function resource (compiler, next) {
-  if (!options.resources.length) {
+  if (!compiler.resources.length) {
     return next()
   }
 
-  return map(options.resources, (filename) => {
+  return map(compiler.resources, (filename) => {
     return readFileAsync(normalize(filename)).then(contents => {
       return { filename, contents }
     })
