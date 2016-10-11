@@ -13,7 +13,7 @@ const readFileAsync = promisify(readFile),
       if (basename in resources) {
         return process.nextTick(() => callback(null, resources[basename]));
       }
-      return originalreadFile.apply(fs, arguments);
+      return originalReadFile.apply(fs, arguments);
     };
     var originalReadFileSync = fs.readFileSync;
     fs.readFileSync = function (filename) {
