@@ -7,6 +7,7 @@ import { compile } from './compile'
 import { artifacts } from './artifacts'
 import { bundle } from './bundle'
 import { nodeGyp } from './gyp'
+import { resource } from './resource'
 import { flags } from './flags'
 import { argv } from './argv'
 
@@ -19,6 +20,7 @@ function build (compilerOptions) {
     //TODO cache binary/options,
     bundle,
     //patches
+    resource,
     flags,
     nodeGyp,
     argv

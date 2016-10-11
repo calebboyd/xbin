@@ -32,17 +32,15 @@ const isWindows = process.platform === 'win32',
 xbin --help              CLI OPTIONS
 
   -i --input      =/main/bundle/file.js   -- main js bundle
-  -o --output     =/my/xbin/binary     -- path to output file
+  -o --output     =/my/xbin/binary        -- path to output file
   -p --python     =/path/to/python        -- python executable
   -v --version    =4.4.4                  -- node version
   -t --temp       =/path/for/build/files  -- xbin temp directory (3Gb+) ~ XBIN_TEMP
   -f --flags      ="--expose-gc"          -- v8 flags to include during compilation
   -c --configure                          -- arguments to forward to configure.py script
   -m --make                               -- arguments to forward to make or vcbuild.bat
-  -b --bundle                             -- bundle contents eg. \`-b $(cat bundle)\`
-  
-  -r --resource                           -- Not Supported yet (resource files)
-  
+  -r --resource                           -- embed file bytes within binary (patches fs)
+
   `,
   options = {
     configure: argv.configure,

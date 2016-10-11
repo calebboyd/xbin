@@ -29,8 +29,7 @@ xbin --help              CLI OPTIONS
   -f --flags      ="--expose-gc"          -- v8 flags to include during compilation
   -c --configure                          -- arguments to forward to configure.py script
   -m --make                               -- arguments to forward to make or vcbuild.bat
-
-  -r --resource                           -- Not Supported yet (resource files)
+  -r --resource                           -- embed file bytes within binary (patches fs)
 ```
 
 ### Prerequisites
@@ -49,9 +48,10 @@ Node supports a `_third_party_main.js`. This file is used to load your applicati
 
 `xbin` does the following
  - facilitates passing commands to `configure` and `make` stages of building node
- - facilitates passing custom command line options
- - modifies `node.gyp` to include additional "core modules" (your application bundle)
- - disables v8 and node command line flags by modifying `src/node.cc`
+ - Disables node flags and facilitates passing custom command line arguments `node.cc`
+ - modifies `node.gyp` to include additional "core modules" (your application bundle(s))
+ - patches `fs.readFile()` and `fs.readFileSync()` methods
+   - bundles files keyed by basename (`path.basename()`)
 
 ### Node Versions
 
@@ -66,9 +66,8 @@ No plans exist to support anything but the latest LTS releases.
 - Ship and update runtimes at will
 
 #### TODO
-- resources
-- native modules
 - bundle splitting
+- native modules (can be done in userland with webpack)
 
 ### LICENSE
 - [MIT](https://github.com/calebboyd/xbin/blob/master/LICENSE)
