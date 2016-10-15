@@ -32,7 +32,7 @@ async function cli (compiler, next) {
     process.exit(0)
   }
 
-  if (!process.stdin.isTTY) {
+  if (!compiler.input && !process.stdin.isTTY) {
     compiler.input = await getStdIn()
   } else if (compiler.input) {
     compiler.input = await readFileAsync(normalize(compiler.input), 'utf-8')
