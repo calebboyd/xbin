@@ -39,7 +39,7 @@ async function cli (compiler, next) {
   }
 
   if (!compiler.input) {
-    process.stderr.write('Error: No input file specified...\nAborting...')
+    process.stderr.write('\nError: No input file specified...\nAborting...\n')
     process.exit(1)
   }
 

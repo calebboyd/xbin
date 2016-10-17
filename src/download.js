@@ -11,14 +11,14 @@ function fetchNodeSource (path, version) {
   const url = `https://nodejs.org/dist/v${ version }/node-v${ version }.tar.gz`
   return new Promise((resolve, reject) => {
     get(url, response => {
-      if (process.stdout.isTTY) {
-        const total = Number.parseInt(response.headers['content-length'], 10),
-          bar = new ProgressBar(`Downloading Node ${ version }: :percent`, { total })
-        response.on('data', x => bar.tick(x.length))
-      }
+      const total = Number.parseInt(response.headers['content-length'], 10),
+        bar = new ProgressBar(`Downloading Node ${ version }: :percent`, { total }),
+        end = (fn, x) => fn(x) | response.removeAllListeners()
+
+      response.on('data', x => bar.tick(x.length))
       response.pipe(new Gunzip()).pipe(new Extract({ path, strip: 1 }))
-        .once('end', () => resolve(response.removeAllListeners()))
-        .once('error', reject)
+        .once('end', () => end(resolve))
+        .once('error', (e) => end(reject, e))
     })
   })
 }

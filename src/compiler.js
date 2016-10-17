@@ -2,6 +2,7 @@ import { dirname, normalize, join } from 'path'
 import { promisify, Promise } from 'bluebird'
 import { readFile, writeFile, createReadStream } from 'fs'
 import { spawn } from 'child_process'
+import spinner from 'char-spinner'
 
 const isWindows = process.platform === 'win32',
   isBsd = Boolean(~process.platform.indexOf('bsd')),
@@ -62,8 +63,16 @@ export class Compiler {
     )
   }
 
-  buildAsync () {
-    return this.runBuildCommandAsync(make, this.make)
+  async buildAsync () {
+    const spinning = spinner()
+    try {
+      await this.runBuildCommandAsync(make, this.make)
+    } catch (e) {
+      throw e
+    } finally {
+      clearTimeout(spinning)
+      spinner.clear()
+    }
   }
 
   deliverable () {

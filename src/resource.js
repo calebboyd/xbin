@@ -8,6 +8,7 @@ const readFileAsync = promisify(readFile),
     var path = require('path');
     var originalReadFile = fs.readFile;
     fs.readFile = function (filename, _, callback) {
+      callback = typeof _ === 'function' ? _ : callback
       var basename = path.basename(filename);
       if (basename in resources) {
         return process.nextTick(() => callback(null, resources[basename]));
