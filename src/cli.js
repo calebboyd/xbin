@@ -45,7 +45,7 @@ async function cli (compiler, next) {
 
   await next()
 
-  if (!process.stdout.isTTY) {
+  if (!compiler.output && !process.stdout.isTTY) {
     compiler.deliverable().pipe(process.stdout)
   } else {
     compiler.deliverable().pipe(
