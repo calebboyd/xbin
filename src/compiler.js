@@ -70,8 +70,8 @@ export class Compiler {
     } catch (e) {
       throw e
     } finally {
-      clearTimeout(spinning)
-      spinner.clear()
+      spinning && clearTimeout(spinning)
+      spinning && spinner.clear()
     }
   }
 
