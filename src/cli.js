@@ -3,7 +3,8 @@ import { Promise, promisify } from 'bluebird'
 import { createWriteStream, readFile } from 'fs'
 import { argv } from './options'
 
-const readFileAsync = promisify(readFile)
+const readFileAsync = promisify(readFile),
+  isWindows = process.platform === 'win32'
 
 function dequoteStdIn (input) {
   input = input.trim()
@@ -49,7 +50,7 @@ async function cli (compiler, next) {
     compiler.deliverable().pipe(process.stdout)
   } else {
     compiler.deliverable().pipe(
-      createWriteStream(normalize(compiler.output))
+      createWriteStream(normalize(compiler.output || `./xbin_${ Date.now() }${ isWindows ? '.exe': '' }`))
     )
   }
 }

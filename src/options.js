@@ -24,8 +24,7 @@ const isWindows = process.platform === 'win32',
       python: null,
       version: '4.4.4',
       temp: process.env.XBIN_TEMP || join(process.cwd(), '.xbin'),
-      make: isWindows ? ['nosign', 'release'] : [],
-      output: './xbin_' + Date.now() + (isWindows ? '.exe' : '')
+      make: isWindows ? ['nosign', 'release'] : []
     }
   }),
   help = `
