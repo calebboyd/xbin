@@ -50,7 +50,7 @@ async function cli (compiler, next) {
     compiler.deliverable().pipe(process.stdout)
   } else {
     compiler.deliverable().pipe(
-      createWriteStream(normalize(compiler.output || `./xbin_${ Date.now() }${ isWindows ? '.exe': '' }`))
+      createWriteStream(normalize(compiler.output || `./xbin_${ Date.now() }${ isWindows ? '.exe' : '' }`))
     )
   }
 }

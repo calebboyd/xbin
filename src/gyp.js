@@ -1,6 +1,6 @@
 export async function nodeGyp ({ src, files, readFileAsync }, next) {
   const nodegyp = await readFileAsync('node.gyp'),
-    nodeGypMarker = "'src/node.js',"
+    nodeGypMarker = "'lib/fs.js',"
 
   nodegyp.contents = nodegyp.contents
     .replace(nodeGypMarker, `

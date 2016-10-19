@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test-build": "node ../index --input index.js --output out.exe",
+    "test-build": "node ../index --input index.js --output out.exe --version 6.9.0",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
