@@ -9,20 +9,20 @@ const isWindows = process.platform === 'win32',
   argv = parseArgv(process.argv, {
     alias: {
       i: 'input',
+      o: 'output',
       p: 'python',
       v: 'version',
       t: 'temp',
-      c: 'configure',
-      f: 'flags',
-      o: 'output',
-      m: 'make',
+      f: 'flag',
       r: 'resource',
-      flag: 'flags',
+      c: 'configure',
+      m: 'make',
+      a: 'plugin',
       h: 'help'
     },
     default: {
       python: null,
-      version: '4.4.4',
+      version: process.version.slice(1),
       temp: process.env.XBIN_TEMP || join(process.cwd(), '.xbin'),
       make: isWindows ? ['nosign', 'release'] : []
     }
@@ -32,26 +32,26 @@ xbin --help              CLI OPTIONS
 
   -i --input      =/main/bundle/file.js   -- main js bundle
   -o --output     =/my/xbin/binary        -- path to output file
-  -p --python     =/path/to/python        -- python executable
+  -p --python     =/path/to/python2       -- python executable
   -v --version    =4.4.4                  -- node version
   -t --temp       =/path/for/build/files  -- xbin temp directory (3Gb+) ~ XBIN_TEMP
-  -f --flags      ="--expose-gc"          -- v8 flags to include during compilation
-  -c --configure                          -- arguments to forward to configure.py script
-  -m --make                               -- arguments to forward to make or vcbuild.bat
-  -r --resource                           -- embed file bytes within binary (patches fs)
+  -f --flag       ="--expose-gc"          -- *v8 flags to include during compilation
+  -r --resource                           -- *embed file bytes within binary (patches fs)
+  -c --configure                          -- *arguments to forward to configure.py script
+  -m --make                               -- *arguments to forward to make or vcbuild.bat
+  -a --plugin                             -- *path or directory to load plugin(s) from
 
+                                             * option can be used more than once
   `,
-  options = {
-    configure: argv.configure,
-    make: argv.make,
-    resources: argv.resource,
-    flags: argv.flags,
-    input: argv.input,
-    output: argv.output,
-    version: argv.version,
-    python: argv.python,
-    tempDir: argv.temp
-  }
+  options = Object.assign({}, argv)
+
+options.flags = options.flag
+options.resources = options.resource
+options.plugins = options.plugin
+
+delete options.flag
+delete options.resource
+delete options.plugin
 
 argv.help = argv.help ? help : false
 
@@ -59,6 +59,7 @@ ensureArray(options, 'configure')
 ensureArray(options, 'make')
 ensureArray(options, 'flags')
 ensureArray(options, 'resources')
+ensureArray(options, 'plugins')
 
 export {
   argv,

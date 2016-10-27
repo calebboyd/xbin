@@ -16,7 +16,7 @@ const isWindows = process.platform === 'win32',
 export class Compiler {
   constructor (options) {
     const compiler = Object.assign(this, options)
-    compiler.src = join(compiler.tempDir, compiler.version)
+    compiler.src = join(compiler.temp, compiler.version)
     compiler.env = Object.assign({}, process.env)
     compiler.files = []
     compiler.readFileAsync = async (file) => {

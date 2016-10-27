@@ -1,11 +1,12 @@
+var path = require('path')
+
 module.exports = function (source) {
   this.cacheable()
-  const byteArrayString = 'var dll = new Buffer([' + Array.from(source).toString() + '])'
-  source = null
+  var newName = path.normalize(this.resourcePath).split(path.delimiter).join('-')
   return `
     var fs = require('fs')
-    ${byteArrayString}
-    var path = require('path').join(process.cwd(), 'test.node')
+    var dll = new Buffer([${ Array.from(source).toString() }])
+    var path = require('path').join(process.cwd(), '${ newName }')
     fs.writeFileSync(path, dll)
     process.dlopen(module, path)
   `
