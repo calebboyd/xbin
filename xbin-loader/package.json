@@ -1,0 +1,16 @@
+{
+  "name": "xbin-loader",
+  "version": "1.0.1",
+  "description": "Load native modules into your application bundle (to be written locally at runtime)",
+  "main": "index.js",
+  "author": "Caleb Boyd <caleb.boyd@gmail.com> (https://github.com/calebboyd)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/calebboyd/xbin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/calebboyd/xbin/issues"
+  },
+  "homepage": "https://github.com/calebboyd/xbin#readme"
+}

@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test-build": "node ../index --input index.js --output out.exe --version 6.9.0",
+    "bundle": "webpack",
+    "build": "node ../index -i ./build/native-test.js -o ./out.exe",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -13,6 +14,7 @@
     "heapdump": "^0.3.7"
   },
   "devDependencies": {
-    "webpack": "^1.13.2"
+    "webpack": "^1.13.3",
+    "xbin-loader": "^1.0.1"
   }
 }
