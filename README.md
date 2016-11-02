@@ -65,7 +65,7 @@ build({
 }).then(() => console.log('done!'))
 ```
 
-## Plugins
+## Plugins (not supported yet)
 
 ```javascript
 export function xbinSuperPlugin (compiler, next) {
@@ -99,9 +99,9 @@ Node supports a `_third_party_main.js`. This file is used to load your applicati
 
 ### How can I use Native Modules?
 
-With a custom `node-loader` (see [node-loader](example/node-loader,js)). You can bundle `.node` files (native extensions).
+With a custom `xbin-loader` (see [xbin-loader](https://github.com/calebboyd/xbin/blob/master/xbin-loader/README.md)). You can bundle `.node` files (native extensions).
 These files are loaded into memory and written to file at runtime. The temp file is required because
-most environments do not have mechanisms for loading dynamic libraries from RAM.
+most environments do not have mechanisms for loading dynamic libraries from RAM. For troubleshooting, see issue #4
 
 ### Node Versions
 
@@ -110,8 +110,8 @@ LTS Versions 4.X and 6.X are supported
 ### Use Cases
 
 - Services written on Node.js
-	- winsw on Windows
-	- systemv or systemd on Linux
+	- winsw on Windows (save it as a resource!)
+	- systemv or systemd on Linux 
 - Ship and update runtimes at will!
 
 ### LICENSE

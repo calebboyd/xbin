@@ -1,4 +1,7 @@
+var IgnorePlugin = require('webpack').IgnorePlugin
+
 module.exports = {
+  plugins: [new IgnorePlugin(/Debug\/addon/)],
   entry: './index.js',
   target: 'node',
   output: {

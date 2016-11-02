@@ -2,6 +2,7 @@ node_modules
 .xbin
 .idea
 lib
+*.node
 *.log
 *.exe
 example/build

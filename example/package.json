@@ -14,6 +14,7 @@
     "heapdump": "^0.3.7"
   },
   "devDependencies": {
+    "ignore-loader": "^0.1.1",
     "webpack": "^1.13.3",
     "xbin-loader": "^1.0.1"
   }
