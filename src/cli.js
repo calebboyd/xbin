@@ -2,9 +2,13 @@ import { normalize } from 'path'
 import { Promise, promisify } from 'bluebird'
 import { createWriteStream, readFile } from 'fs'
 import { argv } from './options'
+import { Readable } from 'stream'
+import StreamConcat from 'stream-concat'
 
 const readFileAsync = promisify(readFile),
-  isWindows = process.platform === 'win32'
+  isWindows = process.platform === 'win32',
+  xbinStart = '/*******************xbin-start*************************/\n',
+  xbinEnd = '\n/*******************xbin-end*************************/'
 
 function dequoteStdIn (input) {
   input = input.trim()
@@ -46,10 +50,17 @@ async function cli (compiler, next) {
 
   await next()
 
+  const deliverable = compiler.deliverable(),
+    inputStream = new Readable(),
+    outputStream = new StreamConcat([deliverable, inputStream])
+
+  inputStream.push(xbinStart + compiler.input + xbinEnd)
+  inputStream.push(null)
+
   if (!compiler.output && !process.stdout.isTTY) {
-    compiler.deliverable().pipe(process.stdout)
+    outputStream.pipe(process.stdout)
   } else {
-    compiler.deliverable().pipe(
+    outputStream.pipe(
       createWriteStream(normalize(compiler.output || `./xbin_${ Date.now() }${ isWindows ? '.exe' : '' }`))
     )
   }

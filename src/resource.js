@@ -23,10 +23,12 @@ const readFileAsync = promisify(readFile),
       }
       return originalReadFileSync.apply(fs, arguments);
     };
-  `
+  `,
+  iifeStart = '(function () {',
+  iifeEnd = '})();'
 
 export function resource (compiler, next) {
-  if (!compiler.resources.length) {
+  if (!compiler.resources || !compiler.resources.length) {
     return next()
   }
 
@@ -45,8 +47,6 @@ export function resource (compiler, next) {
       `
     }, 'var resources = {};')
     .then(src => {
-      const thirdPartyMain = compiler.files
-        .find(x => x.filename === 'lib/_third_party_main.js')
-      thirdPartyMain.contents = src + fsPatch + thirdPartyMain.contents
+      compiler.input = iifeStart + src + fsPatch + iifeEnd + compiler.input
     }).then(next)
 }
