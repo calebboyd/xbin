@@ -5,7 +5,6 @@ import { cli } from './cli'
 import { download } from './download'
 import { compile } from './compile'
 import { artifacts } from './artifacts'
-import { bundle } from './bundle'
 import { nodeGyp } from './gyp'
 import { resource } from './resource'
 import { flags } from './flags'
@@ -18,9 +17,6 @@ function build (compilerOptions) {
     download,
     compile,
     artifacts,
-    //TODO cache binary/options,
-    bundle,
-    //patches
     resource,
     ico,
     flags,
@@ -28,7 +24,6 @@ function build (compilerOptions) {
     argv
   )
   return xbin(new Compiler(compilerOptions))
-
 }
 
 export {

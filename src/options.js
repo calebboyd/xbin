@@ -18,7 +18,8 @@ const isWindows = process.platform === 'win32',
       c: 'configure',
       m: 'make',
       a: 'plugin',
-      h: 'help'
+      h: 'help',
+      n: 'name'
     },
     default: {
       python: null,
@@ -35,6 +36,8 @@ xbin --help              CLI OPTIONS
   -p --python     =/path/to/python2       -- python executable
   -v --version    =4.4.4                  -- node version
   -t --temp       =/path/for/build/files  -- xbin temp directory (3Gb+) ~ XBIN_TEMP
+  -n --name       =xbin-output.js         -- file name for error reporting at run time
+     --clean                              -- force recompile after build caches
   -f --flag       ="--expose-gc"          -- *v8 flags to include during compilation
   -r --resource                           -- *embed file bytes within binary (patches fs)
   -c --configure                          -- *arguments to forward to configure.py script

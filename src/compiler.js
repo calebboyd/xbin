@@ -3,6 +3,7 @@ import { promisify, Promise } from 'bluebird'
 import { readFile, writeFile, createReadStream } from 'fs'
 import { spawn } from 'child_process'
 import spinner from 'char-spinner'
+import { fileContainsAsync } from './file-contains'
 
 const isWindows = process.platform === 'win32',
   isBsd = Boolean(~process.platform.indexOf('bsd')),
@@ -44,6 +45,12 @@ export class Compiler {
     }
   }
 
+  get deliverableLocation () {
+    return isWindows
+      ? join(this.src, 'Release', 'node.exe')
+      : join(this.src, 'out', 'Release', 'node')
+  }
+
   runBuildCommandAsync (command, args) {
     return new Promise((resolve, reject) => {
       spawn(command, args, {
@@ -56,15 +63,27 @@ export class Compiler {
     })
   }
 
-  configureAsync () {
+  _configureAsync () {
     return this.runBuildCommandAsync(
       this.env.PYTHON || 'python',
       [configure, ...this.configure]
     )
   }
 
+  async _isBuildCachedAsync () {
+    const thirdPartyMain = await this.readFileAsync('lib/_third_party_main.js')
+
+    return fileContainsAsync(this.deliverableLocation, thirdPartyMain.contents)
+  }
+
   async buildAsync () {
+    if (!this.clean && await this._isBuildCachedAsync()) {
+      return
+    }
+
     const spinning = spinner()
+    await this._configureAsync()
+
     try {
       await this.runBuildCommandAsync(make, this.make)
     } catch (e) {
@@ -76,9 +95,6 @@ export class Compiler {
   }
 
   deliverable () {
-    return createReadStream(isWindows
-      ? join(this.src, 'Release', 'node.exe')
-      : join(this.src, 'out', 'Release', 'node')
-    )
+    return createReadStream(this.deliverableLocation)
   }
 }

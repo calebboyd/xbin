@@ -36,6 +36,8 @@ xbin --help              CLI OPTIONS
   -p --python     =/path/to/python2       -- python executable
   -v --version    =4.4.4                  -- node version
   -t --temp       =/path/for/build/files  -- xbin temp directory (3Gb+) ~ XBIN_TEMP
+  -n --name       =xbin-output.js         -- file name for error reporting at run time
+     --clean                              -- force recompile after build caches
   -f --flag       ="--expose-gc"          -- *v8 flags to include during compilation
   -r --resource                           -- *embed file bytes within binary (patches fs)
   -c --configure                          -- *arguments to forward to configure.py script
@@ -57,6 +59,8 @@ build({
   python: '/python2/path',                //Default: '' //assumed present in environment
   version: '6.9.1',                       //Default: Host node version
   temp: '/tmp/build/directory',           //Default: './.xbin'
+  name: 'xbin-output.js'                  //Default: 'xbin-output.js'
+  clean: true                             //Default: false
   flags: [...],                           //Default: []
   resources: [...],                       //Default: []
   configure: [...],                       //Default: []
@@ -85,6 +89,18 @@ export function xbinSuperPlugin (compiler, next) {
 }
 ```
 
+## Fast Rebuilds
+
+Once you have successfully built with xbin, the compiled version of Node will be cached and reused for future builds.
+You can change your `input` and `resource`s without the need to recompile Node.  Changes to `version`, `name`, `flag`s,
+`configure`, and `make` will automatically cause a recompile.  If you wish to force a recompile, you can set the `--clean` option.
+
+```bash
+$ echo 'console.log("Hello World")' | xbin > myApp # several minutes
+$ echo 'console.log("Hello Different World")' | xbin > myApp # seconds
+$ echo 'console.log("Hello Clean World")' | xbin --clean > myApp # several minutes
+```
+
 ### How does it work
 
 Node supports a `_third_party_main.js`. This file is used to load your application bundle.
@@ -111,7 +127,7 @@ LTS Versions 4.X and 6.X are supported
 
 - Services written on Node.js
 	- winsw on Windows (save it as a resource!)
-	- systemv or systemd on Linux 
+	- systemv or systemd on Linux
 - Ship and update runtimes at will!
 
 ### LICENSE
