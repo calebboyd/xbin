@@ -23,7 +23,11 @@ function fetchNodeSource (path, version) {
   })
 }
 
-export async function download ({ src, version }, next) {
+export async function download (compiler, next) {
+  if (compiler.download) {
+    return next()
+  }
+  const { src, version } = compiler
   await statAsync(src).then(
     x => !x.isDirectory() && fetchNodeSource(src, version),
     () => fetchNodeSource(src, version)
