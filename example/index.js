@@ -1,3 +1,2 @@
 console.log(process.arch)
-var x = require('heapdump')
-console.log('writeSnapshot' in x)
+console.log(__dirname);

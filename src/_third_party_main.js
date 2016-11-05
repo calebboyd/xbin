@@ -1,6 +1,7 @@
 var vm = require('vm'),
   fs = require('fs'),
   stream = fs.createReadStream(process.execPath),
+  removeListeners = () => stream.removeAllListeners(),
   markerStart = '/*******************xbin-',
   markerEnd = '*************************/',
   xbinStart = markerStart + 'start' + markerEnd,
@@ -49,7 +50,13 @@ stream.on('data', function (chunk) {
   }
 })
 
-stream.on('end', function () {
+stream.on('error', (e) => {
+  removeListeners()
+  throw e
+})
+
+stream.on('end', () => {
+  removeListeners()
   if (!startFound || !endFound) {
     throw new Error('Could not find xbin output to execute')
   }

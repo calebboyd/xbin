@@ -2,7 +2,8 @@ import { createReadStream } from 'fs'
 
 export async function fileContainsAsync (filePath, text) {
   const stream = createReadStream(filePath),
-    cache = []
+    cache = [],
+    removeAllListeners = () => stream.removeAllListeners()
   let found = false
 
   return new Promise(resolve => {
@@ -24,7 +25,7 @@ export async function fileContainsAsync (filePath, text) {
       }
     })
 
-    stream.on('end', () => resolve(found))
-    stream.on('error', () => resolve(false))
+    stream.on('end', () => removeAllListeners() && resolve(found))
+    stream.on('error', () => removeAllListeners() && resolve(false))
   })
 }

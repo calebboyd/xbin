@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "bundle": "webpack",
-    "build": "node ../index -i ./build/native-test.js -o ./out.exe",
+    "build": "node ../index -m x64 -m nosign -m release -i ./build/native-test.js -o ./out.exe",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

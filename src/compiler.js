@@ -27,7 +27,12 @@ export class Compiler {
       }
       compiler.files.push({
         filename: file,
-        contents: await readFileAsync(join(compiler.src, file), 'utf-8')
+        contents: await readFileAsync(join(compiler.src, file), 'utf-8').catch(e => {
+          if (e.code !== 'ENOENT') {
+            throw e
+          }
+          return ''
+        })
       })
       return compiler.readFileAsync(file)
     }
