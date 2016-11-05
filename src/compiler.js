@@ -2,8 +2,31 @@ import { dirname, normalize, join } from 'path'
 import { promisify, Promise } from 'bluebird'
 import { readFile, writeFile, createReadStream } from 'fs'
 import { spawn } from 'child_process'
+import { get as getHttps } from 'https'
+import { get as getHttp } from 'http'
 import spinner from 'char-spinner'
 import { fileContainsAsync } from './file-contains'
+
+function getHttpResponseAsync (url) {
+  if (!url.includes('http')) {
+    url = `https://calebboyd.github.io/${url}`
+  }
+  const getter = url.includes('https') ? getHttps : getHttp
+  return new Promise((resolve, reject) => {
+    const request = getter(url, response => {
+      resolve(response)
+      request.removeAllListners()
+    })
+    .once('error', (error) => {
+      reject(error)
+      request.removeAllListeners()
+    })
+  })
+}
+
+function isString (x) {
+  return typeof x === 'string' || x instanceof String
+}
 
 const isWindows = process.platform === 'win32',
   isBsd = Boolean(~process.platform.indexOf('bsd')),
@@ -99,7 +122,13 @@ export class Compiler {
     }
   }
 
-  deliverable () {
-    return createReadStream(this.deliverableLocation)
+  getDeliverableAsync () {
+    if (this.download) {
+      return getHttpResponseAsync(isString(this.download)
+        ? this.download
+        : [process.platform, process.arch, process.version.slice(1)].join('-')
+      )
+    }
+    return Promise.resolve(createReadStream(this.deliverableLocation))
   }
 }

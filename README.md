@@ -38,6 +38,7 @@ xbin --help              CLI OPTIONS
   -t --temp       =/path/for/build/files  -- xbin temp directory (3Gb+) ~ XBIN_TEMP
   -n --name       =xbin-output.js         -- file name for error reporting at run time
      --clean                              -- force recompile after build caches
+  -d --download   =win32-x64-X.X.X        -- use prebuilt binary (url or name)
   -f --flag       ="--expose-gc"          -- *v8 flags to include during compilation
   -r --resource                           -- *embed file bytes within binary (patches fs)
   -c --configure                          -- *arguments to forward to configure.py script
@@ -121,7 +122,7 @@ LTS Versions 4.X and 6.X are supported
 
 xbin is built around a series of [middleware](https://github.com/calebboyd/app-builder). Each middleware function is described below. The first point will describe the upstream function and the second, its downstream function.
 
- - **cli** 
+ - **cli**
   - Collects and normalizes input
   - Writes and noramlizes output
  - **download**
@@ -142,7 +143,7 @@ xbin is built around a series of [middleware](https://github.com/calebboyd/app-b
  - **argv**
   - Updates `src/node.cc` of the Node Source, to bypass strict argv options. Allowing you to pass arbitrary command line options to your custom runtime.
  - **resource**
-  - If resource flags are supplied, additional code is added that builds a dictionary of getters keyed by resource basename. The getters return a Buffer of the resource's bytes. They are retrieved at runtime by reading from `fs.readFile` and `fs.readFileSync` 
+  - If resource flags are supplied, additional code is added that builds a dictionary of getters keyed by resource basename. The getters return a Buffer of the resource's bytes. They are retrieved at runtime by reading from `fs.readFile` and `fs.readFileSync`
     - eg. `cat input.js | xbin --resource ./some/file > out.run` will cause any `readFile` or `readFileSync` of `./any/path/file` where the basename is `file` to retrieve the embedded resource.
  - **ico**
   - Overwrites node's included icon file
@@ -155,7 +156,6 @@ The Compiler object that is passed to each middleware function has _all_ of the 
 
  - `readFileAsync('node/src/file'): Promise<{ filename: string, contents: Buffer }>` - The file path should _not_ be normalized, or be prefaced with a `/`.  The filename will be joined and normalized with the temporary source locatoin. Files that are read into the compiler cache are written out during the `articacts` downstream function
  - `writeFileAsync('node/src/file'): Promise<void>` - This method immediately writes a file to the node source directory currently being operated on.
- - `files: Array<{ filename: string, contents: Buffer }>`  - This property stores currently cached files.
 
 
 ### LICENSE

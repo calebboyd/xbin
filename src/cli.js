@@ -50,7 +50,7 @@ async function cli (compiler, next) {
 
   await next()
 
-  const deliverable = compiler.deliverable(),
+  const deliverable = await compiler.getDeliverableAsync(),
     inputStream = new Readable(),
     outputStream = new StreamConcat([deliverable, inputStream])
 
