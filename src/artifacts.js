@@ -46,7 +46,7 @@ export async function artifacts ({ files, writeFileAsync, src, download }, next)
   })
   await next()
   await mapAsync(tmpFiles, x => unlinkAsync(x))
-  await mapAsync(files, async (file) => {
+  return mapAsync(files, async (file) => {
     const sourceFile = join(src, file.filename),
       tempFile = join(temp, file.filename),
       fileContents = await maybeReadFileContents(sourceFile)

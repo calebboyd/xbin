@@ -29,5 +29,5 @@ export async function compile (compiler, next) {
 
   await next()
 
-  await compiler.buildAsync()
+  return compiler.buildAsync()
 }
