@@ -1,4 +1,7 @@
-export async function nodeGyp ({ src, files, readFileAsync }, next) {
+export async function nodeGyp ({ src, files, readFileAsync, download }, next) {
+  if (download) {
+    return next()
+  }
   const nodegyp = await readFileAsync('node.gyp'),
     nodeGypMarker = "'lib/fs.js',"
 

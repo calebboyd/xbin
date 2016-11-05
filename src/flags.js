@@ -1,5 +1,5 @@
-export async function flags ({ readFileAsync, flags = [] }, next) { //eslint-disable-line no-shadow
-  if (!flags.length) {
+export async function flags ({ download, readFileAsync, flags = [] }, next) { //eslint-disable-line no-shadow
+  if (!flags.length || download) {
     return next()
   }
 

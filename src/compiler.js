@@ -9,13 +9,13 @@ import { fileContainsAsync } from './file-contains'
 
 function getHttpResponseAsync (url) {
   if (!url.includes('http')) {
-    url = `https://calebboyd.github.io/${url}`
+    url = `https://calebboyd.github.io/xbin/${url}`
   }
   const getter = url.includes('https') ? getHttps : getHttp
   return new Promise((resolve, reject) => {
     const request = getter(url, response => {
       resolve(response)
-      request.removeAllListners()
+      request.removeAllListeners()
     })
     .once('error', (error) => {
       reject(error)

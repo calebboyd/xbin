@@ -14,6 +14,10 @@ function getOptionsComment (options) {
 }
 
 export async function compile (compiler, next) {
+  if (compiler.download) {
+    return next()
+  }
+
   const thirdPartyMain = await compiler.readFileAsync('lib/_third_party_main.js')
   let thirdPartyMainContent = await readFileAsync(join(__dirname, '_third_party_main.js'))
 

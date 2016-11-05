@@ -6,6 +6,9 @@ import { promisify } from 'bluebird'
 const readFileAsync = promisify(readFile)
 
 export async function ico (compiler, next) {
+  if (compiler.download) {
+    return next()
+  }
   if (!compiler.ico) {
     return next()
   }

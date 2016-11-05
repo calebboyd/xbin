@@ -32,7 +32,10 @@ const mkdirpAsync = promisify(mkdirp),
  *  - saves original versions of staged patched files
  *  - writes the patched versions
  */
-export async function artifacts ({ files, writeFileAsync, src }, next) {
+export async function artifacts ({ files, writeFileAsync, src, download }, next) {
+  if (download) {
+    return next()
+  }
   const temp = join(src, 'xbin')
   await mkdirpAsync(temp)
   const tmpFiles = await readDirAsync(temp) //eslint-disable-line one-var
