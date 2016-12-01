@@ -42,15 +42,5 @@ export async function noderc (compiler, next) {
     file.contents = file.contents.replace(`VALUE "LegalCopyright", "${options.LegalCopyright}"`, `VALUE "LegalCopyright", "${options.LegalCopyright}"\r\n            VALUE "LegalTrademarks", "${options.LegalTrademarks}"`)
   }
 
-  /*file.contents = file.contents
-    .replace('VALUE "CompanyName", "Node.js"', `VALUE "CompanyName", "${options.CompanyName}"`)
-    .replace('VALUE "ProductName", "Node.js"', `VALUE "ProductName", "${options.ProductName}"`)
-    .replace('VALUE "FileDescription", "Node.js: Server-side JavaScript"', `VALUE "FileDescription", "${options.FileDescription}"`)
-    .replace('VALUE "FileVersion", NODE_EXE_VERSION', `VALUE "FileVersion", "${options.FileVersion}"`)
-    .replace('VALUE "ProductVersion", NODE_EXE_VERSION', `VALUE "ProductVersion", "${options.ProductVersion}"`)
-    .replace('VALUE "OriginalFilename", "node.exe"', `VALUE "OriginalFilename", "${options.OriginalFilename}"`)
-    .replace('VALUE "InternalName", "node"', `VALUE "InternalName", "${options.InternalName}"`)
-    .replace('VALUE "LegalCopyright", "Copyright Node.js contributors. MIT license."', `VALUE "LegalCopyright", "${options.LegalCopyright}"`)*/
-
   return next()
 }
