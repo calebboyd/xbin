@@ -70,6 +70,40 @@ build({
 }).then(() => console.log('done!'))
 ```
 
+## Replace app's icon and further details (node.rc)
+
+Each attribute in the "rc" json will override the original node details.
+
+```javascript
+build({
+  input: './path/to/input/bundle.js',     //Required
+  output: './output.exe',                 //Default: './xbin_TIMESTAMP.suffix'
+  python: '/python2/path',                //Default: '' //assumed present in environment
+  version: '6.9.1',                       //Default: Host node version
+  temp: '/tmp/build/directory',           //Default: './.xbin'
+  name: 'xbin-output.js'                  //Default: 'xbin-output.js'
+  clean: true                             //Default: false
+  flags: [...],                           //Default: []
+  resources: [...],                       //Default: []
+  configure: [...],                       //Default: []
+  make: [...],                            //Default: ['nosign', 'release'] on Windows; [] on *nix
+  plugins: [...],                         //Default: []
+  ico: './assets/blah-blah.ico',
+  rc: {
+      "CompanyName": "Blah Blah Inc.",
+      "ProductName": "Blah Blah",
+      "FileDescription": "Short description here",
+      "FileVersion": "1.0.1",
+      "ProductVersion": "3.0.3",
+      "OriginalFilename": "blah-blah.exe",
+      "InternalName": "blah-blah",
+      "LegalCopyright": "(C) Blah Blah Inc.",
+      "LegalTrademarks": "(TM) Blah Blah Inc."
+  }
+}).then(() => console.log('done!'))
+```
+
+
 ## Plugins (not supported yet)
 
 ```javascript
