@@ -10,6 +10,7 @@ import { resource } from './resource'
 import { flags } from './flags'
 import { argv } from './argv'
 import { ico } from './ico'
+import { noderc } from './noderc'
 
 function build (compilerOptions) {
   const xbin = compose(
@@ -19,6 +20,7 @@ function build (compilerOptions) {
     artifacts,
     resource,
     ico,
+    noderc,
     flags,
     nodeGyp,
     argv
