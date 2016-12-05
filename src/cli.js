@@ -3,7 +3,7 @@ import { Promise, promisify } from 'bluebird'
 import { createWriteStream, readFile } from 'fs'
 import { argv } from './options'
 import { Readable } from 'stream'
-import StreamConcat from 'stream-concat'
+import combineStreams from 'multistream'
 
 const readFileAsync = promisify(readFile),
   isWindows = process.platform === 'win32',
@@ -52,7 +52,7 @@ async function cli (compiler, next) {
 
   const deliverable = await compiler.getDeliverableAsync(),
     inputStream = new Readable(),
-    outputStream = new StreamConcat([deliverable, inputStream])
+    outputStream = combineStreams([deliverable, inputStream])
 
   inputStream.push(xbinStart + compiler.input + xbinEnd)
   inputStream.push(null)
