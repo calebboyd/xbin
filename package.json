@@ -1,6 +1,6 @@
 {
   "name": "xbin",
-  "version": "2.0.2",
+  "version": "2.1.1",
   "description": "Package your node applications as standalone executable binaries, instantly.",
   "main": "index.js",
   "keywords": [
