@@ -37,13 +37,14 @@ xbin --help              CLI OPTIONS
   -v --version    =4.4.4                  -- node version
   -t --temp       =/path/for/build/files  -- xbin temp directory (3Gb+) ~ XBIN_TEMP
   -n --name       =xbin-output.js         -- file name for error reporting at run time
-     --clean                              -- force recompile after build caches
   -d --download   =win32-x64-X.X.X        -- use prebuilt binary (url or name)
   -f --flag       ="--expose-gc"          -- *v8 flags to include during compilation
   -r --resource                           -- *embed file bytes within binary (patches fs)
   -c --configure                          -- *arguments to forward to configure.py script
   -m --make                               -- *arguments to forward to make or vcbuild.bat
   -a --plugin                             -- *path or directory to load plugin(s) from
+
+  --clean                                 -- force recompile after build caches
 
                                              * option can be used more than once
 ```
@@ -61,64 +62,36 @@ build({
   version: '6.9.1',                       //Default: Host node version
   temp: '/tmp/build/directory',           //Default: './.xbin'
   name: 'xbin-output.js'                  //Default: 'xbin-output.js'
-  clean: true                             //Default: false
-  flags: [...],                           //Default: []
-  resources: [...],                       //Default: []
-  configure: [...],                       //Default: []
-  make: [...],                            //Default: ['nosign', 'release'] on Windows; [] on *nix
-  plugins: [...]                          //Default: []
-}).then(() => console.log('done!'))
-```
-
-## Replace app's icon and further details (node.rc)
-
-Each attribute in the "rc" json will override the original node details.
-
-```javascript
-build({
-  input: './path/to/input/bundle.js',     //Required
-  output: './output.exe',                 //Default: './xbin_TIMESTAMP.suffix'
-  python: '/python2/path',                //Default: '' //assumed present in environment
-  version: '6.9.1',                       //Default: Host node version
-  temp: '/tmp/build/directory',           //Default: './.xbin'
-  name: 'xbin-output.js'                  //Default: 'xbin-output.js'
-  clean: true                             //Default: false
+  ico: './myAssets/my-icon.ico',          //Default: ''
   flags: [...],                           //Default: []
   resources: [...],                       //Default: []
   configure: [...],                       //Default: []
   make: [...],                            //Default: ['nosign', 'release'] on Windows; [] on *nix
   plugins: [...],                         //Default: []
-  ico: './assets/blah-blah.ico',
+  clean: true                             //Default: false
   rc: {
-      "CompanyName": "Blah Blah Inc.",
-      "ProductName": "Blah Blah",
-      "FileDescription": "Short description here",
-      "FileVersion": "1.0.1",
-      "ProductVersion": "3.0.3",
-      "OriginalFilename": "blah-blah.exe",
-      "InternalName": "blah-blah",
-      "LegalCopyright": "(C) Blah Blah Inc.",
-      "LegalTrademarks": "(TM) Blah Blah Inc."
+      "CompanyName": "Node.js",
+      "ProductName": "Node.js",
+      "FileDescription": "Node.js: Server-side JavaScript",
+      "FileVersion": "NODE_EXE_VERSION",
+      "ProductVersion": "NODE_EXE_VERSION",
+      "OriginalFilename": "node.exe",
+      "InternalName": "node",
+      "LegalCopyright": "Copyright Node.js contributors. MIT license.",
+      "LegalTrademarks": ""
   }
 }).then(() => console.log('done!'))
 ```
-
 
 ## Plugins (not supported yet)
 
 ```javascript
 export function xbinSuperPlugin (compiler, next) {
-  //Command line arguments will be available by key name on the compiler instance
-  // patch an existing source file or build on previous patches/additions
+  // Command line arguments will be available by key name on the compiler instance
+  // patch or add a source file
   return compiler.readFileAsync('src/file/of/interest').then(file => {
     file.contents = myTransform(file.contents)
     return next()
-  })
-  // OR/AND
-  // add new files or overwrite existing files
-  compiler.files.push({
-    filename: '/src/my/new/file'
-    contents: myFileContents
   })
   return next()
 }
@@ -132,8 +105,8 @@ You can change your `input` and `resource`s without the need to recompile Node. 
 
 ```bash
 $ echo 'console.log("Hello World")' | xbin > myApp # several minutes
-$ echo 'console.log("Hello Different World")' | xbin > myApp # seconds
-$ echo 'console.log("Hello Clean World")' | xbin --clean > myApp # several minutes
+$ echo 'console.log("Hello World Different")' | xbin > myApp # seconds
+$ echo 'console.log("Hello World Clean")' | xbin --clean > myApp # several minutes
 ```
 ### How can I use Native Modules?
 

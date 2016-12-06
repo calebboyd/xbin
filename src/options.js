@@ -38,16 +38,17 @@ xbin --help              CLI OPTIONS
   -v --version    =4.4.4                  -- node version
   -t --temp       =/path/for/build/files  -- xbin temp directory (3Gb+) ~ XBIN_TEMP
   -n --name       =xbin-output.js         -- file name for error reporting at run time
-     --clean                              -- force recompile after build caches
-  -d --download   =win32-x64-X.X.X        -- use prebuilt binary. If no binary is passed, current architecture is used
+  -d --download   =win32-x64-X.X.X        -- use prebuilt binary (url or name)
   -f --flag       ="--expose-gc"          -- *v8 flags to include during compilation
   -r --resource                           -- *embed file bytes within binary (patches fs)
   -c --configure                          -- *arguments to forward to configure.py script
   -m --make                               -- *arguments to forward to make or vcbuild.bat
   -a --plugin                             -- *path or directory to load plugin(s) from
 
+  --clean                                 -- force recompile after build caches
+
                                              * option can be used more than once
-  `,
+`,
   options = Object.assign({}, argv)
 
 options.flags = options.flag
