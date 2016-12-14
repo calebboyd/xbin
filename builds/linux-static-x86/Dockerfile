@@ -37,3 +37,4 @@ ENV XBIN_TEMP=/xbintemp
 RUN echo 'console.log("setup")' | xbin -c="--fully-static" > out.bin
 
 RUN node -e "var f=require('fs'),s='*'.repeat(19),o='out.bin';c=f.readFileSync(o);f.writeFileSync(o,c.slice(0,c.indexOf('/'+s+'xbin-start')))"
+#docker build --build-arg NODE_VERSION=6.9.2 --build-arg NPM_VERSION=3.10.9 --build-arg XBIN_VERSION=2.1.1
