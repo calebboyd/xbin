@@ -6,6 +6,19 @@ import { get as getHttps } from 'https'
 import { get as getHttp } from 'http'
 import spinner from 'char-spinner'
 import { fileContainsAsync } from './file-contains'
+import { EOL } from 'os'
+
+
+const
+  isWindows = process.platform === 'win32',
+  isBsd = Boolean(~process.platform.indexOf('bsd')),
+  make = isWindows && 'vcbuild.bat'
+    || isBsd && 'gmake'
+    || 'make',
+  configure = isWindows ? 'configure' : './configure',
+  readFileAsync = promisify(readFile),
+  writeFileAsync = promisify(writeFile),
+  NOT_FOUND = 404
 
 function getHttpResponseAsync (url) {
   if (!url.includes('http')) {
@@ -14,6 +27,11 @@ function getHttpResponseAsync (url) {
   const getter = url.includes('https') ? getHttps : getHttp
   return new Promise((resolve, reject) => {
     const request = getter(url, response => {
+      if (response.statusCode === NOT_FOUND) {
+        reject(`Binary "${url}" Not Found!${EOL}` +
+          'Please refer to platform prefixed names located here: ' +
+          'https://github.com/calebboyd/xbin/tree/gh-pages')
+      }
       resolve(response)
       request.removeAllListeners()
     })
@@ -27,15 +45,6 @@ function getHttpResponseAsync (url) {
 function isString (x) {
   return typeof x === 'string' || x instanceof String
 }
-
-const isWindows = process.platform === 'win32',
-  isBsd = Boolean(~process.platform.indexOf('bsd')),
-  make = isWindows && 'vcbuild.bat'
-    || isBsd && 'gmake'
-    || 'make',
-  configure = isWindows ? 'configure' : './configure',
-  readFileAsync = promisify(readFile),
-  writeFileAsync = promisify(writeFile)
 
 export class Compiler {
   constructor (options) {
