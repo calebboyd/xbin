@@ -8,7 +8,6 @@ import spinner from 'char-spinner'
 import { fileContainsAsync } from './file-contains'
 import { EOL } from 'os'
 
-
 const
   isWindows = process.platform === 'win32',
   isBsd = Boolean(~process.platform.indexOf('bsd')),
