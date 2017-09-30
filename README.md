@@ -1,6 +1,6 @@
 # xbin
 
-# DEPRECATED - As of 2.0.0 all xbin functionality has been built into [nexe](https://github.com/nexe/nexe)
+# DEPRECATED - Use [nexe](https://github.com/nexe/nexe) instead
 
 Package your node applications as standalone executable binaries, instantly.
 
