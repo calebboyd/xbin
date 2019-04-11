@@ -34,10 +34,10 @@ function getHttpResponseAsync (url) {
       resolve(response)
       request.removeAllListeners()
     })
-    .once('error', (error) => {
-      reject(error)
-      request.removeAllListeners()
-    })
+      .once('error', (error) => {
+        reject(error)
+        request.removeAllListeners()
+      })
   })
 }
 
@@ -94,8 +94,8 @@ export class Compiler {
         env: this.env,
         stdio: 'ignore'
       })
-      .once('error', reject)
-      .once('close', resolve)
+        .once('error', reject)
+        .once('close', resolve)
     })
   }
 

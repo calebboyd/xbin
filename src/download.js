@@ -1,26 +1,19 @@
-import { Extract } from 'tar'
-import { Gunzip } from 'zlib'
-import { get } from 'https'
+import dl from 'download'
 import { stat } from 'fs'
-import { Promise, promisify } from 'bluebird'
+import { promisify } from 'bluebird'
 import ProgressBar from 'progress'
 
 const statAsync = promisify(stat)
 
-function fetchNodeSource (path, version) {
+function fetchNodeSource (dest, version) {
   const url = `https://nodejs.org/dist/v${ version }/node-v${ version }.tar.gz`
-  return new Promise((resolve, reject) => {
-    get(url, response => {
-      const total = Number.parseInt(response.headers['content-length'], 10),
-        bar = new ProgressBar(`Downloading Node ${ version }: :percent`, { total }),
-        end = (fn, x) => fn(x) | response.removeAllListeners()
+  return dl(url, dest, { extract: true, strip: 1 })
+    .on('response', (res) => {
+      const total = +res.headers['content-length'],
+        bar = new ProgressBar(`Downloading Node ${ version }: :percent`, { total })
 
-      response.on('data', x => bar.tick(x.length))
-      response.pipe(new Gunzip()).pipe(new Extract({ path, strip: 1 }))
-        .once('end', () => end(resolve))
-        .once('error', (e) => end(reject, e))
+      res.on('data', data => bar.tick(data.length))
     })
-  })
 }
 
 export async function download (compiler, next) {
